@@ -1,21 +1,21 @@
 <?php
-###############################################################
-#          Simple Desk Project - www.simpledesk.net           #
-###############################################################
-#       An advanced help desk modification built on SMF       #
-###############################################################
-#                                                             #
-#         * Copyright 2019 - SimpleDesk.net                   #
-#                                                             #
-#   This file and its contents are subject to the license     #
-#   included with this distribution, license.txt, which       #
-#   states that this software is New BSD Licensed.            #
-#   Any questions, please contact SimpleDesk.net              #
-#                                                             #
-###############################################################
-# SimpleDesk Version: 2.1 Beta 1                              #
-# File Info: check-license.php                                #
-###############################################################
+/**************************************************************
+*          Simple Desk Project - www.simpledesk.net           *
+***************************************************************
+*       An advanced help desk modification built on SMF       *
+***************************************************************
+*                                                             *
+*         * Copyright 2019 - SimpleDesk.net                   *
+*                                                             *
+*   This file and its contents are subject to the license     *
+*   included with this distribution, license.txt, which       *
+*   states that this software is New BSD Licensed.            *
+*   Any questions, please contact SimpleDesk.net              *
+*                                                             *
+***************************************************************
+* SimpleDesk Version: 2.1 Beta 1                              *
+* File Info: check-license.php                                *
+**************************************************************/
 
 // Stuff we will ignore.
 $ignoreFiles = array(
@@ -70,25 +70,25 @@ $contents = fread($file, 1300);
 
 // How the license file should look, in a regex type format.
 $match = array(
-	0 =>	'#{63}' . '[\r]?\n',
-	1 =>	'# {10}Simple Desk Project - www.simpledesk.net {11}#' . '[\r]?\n',
-	2 =>	'#{63}' . '[\r]?\n',
-	3 =>	'# {7}An advanced help desk modification built on SMF {7}#' . '[\r]?\n',
-	4 =>	'#{63}' . '[\r]?\n',
-	5 =>	'# {61}#' . '[\r]?\n',
-	6 =>	'# {9}\* Copyright \d{4} - SimpleDesk.net {19}#' . '[\r]?\n',
-	7 =>	'# {61}#' . '[\r]?\n',
-	8 =>	'# {3}This file and its contents are subject to the license {5}#' . '[\r]?\n',
-	9 =>	'# {3}included with this distribution, license.txt, which {7}#' . '[\r]?\n',
-	10 =>	'# {3}states that this software is New BSD Licensed. {12}#' . '[\r]?\n',
-	11 =>	'# {3}Any questions, please contact SimpleDesk.net {14}#' . '[\r]?\n',
-	12 =>	'# {61}#' . '[\r]?\n',
-	13 =>	'#{63}' . '[\r]?\n',
-	14 =>	'# SimpleDesk Version: [^#]+#' . '[\r]?\n',
+	0 =>	'/\*{62}' . '[\r]?\n',
+	1 =>	'\* {10}Simple Desk Project - www.simpledesk.net {11}\*' . '[\r]?\n',
+	2 =>	'\*{63}' . '[\r]?\n',
+	3 =>	'\* {7}An advanced help desk modification built on SMF {7}\*' . '[\r]?\n',
+	4 =>	'\*{63}' . '[\r]?\n',
+	5 =>	'\* {61}\*' . '[\r]?\n',
+	6 =>	'\* {9}\* Copyright \d{4} - SimpleDesk.net {19}\*' . '[\r]?\n',
+	7 =>	'\* {61}\*' . '[\r]?\n',
+	8 =>	'\* {3}This file and its contents are subject to the license {5}\*' . '[\r]?\n',
+	9 =>	'\* {3}included with this distribution, license.txt, which {7}\*' . '[\r]?\n',
+	10 =>	'\* {3}states that this software is New BSD Licensed. {12}\*' . '[\r]?\n',
+	11 =>	'\* {3}Any questions, please contact SimpleDesk.net {14}\*' . '[\r]?\n',
+	12 =>	'\* {61}\*' . '[\r]?\n',
+	13 =>	'\*{63}' . '[\r]?\n',
+	14 =>	'\* SimpleDesk Version: [^\*]+\*' . '[\r]?\n',
 //	14 =>	'# SimpleDesk Version: ' . $currentVersion . ' {' . ($sd_version_whitespace - strlen($currentVersion)) . '}#' . '[\r]?\n',
-	15 =>	'# File Info: [^#]+#' . '[\r]?\n',
+	15 =>	'\* File Info: [^\*]+\*' . '[\r]?\n',
 //	15 =>	'# File Info: ' . $shortCurrentFile . ' {' . ($sd_file_whitespace - strlen($shortCurrentFile)) . '}#' . '[\r]?\n',
-	16 =>	'#{63}' . '[\r]?\n',
+	16 =>	'\*{62}/' . '[\r]?\n',
 );
 
 // Just see if the license is there.
@@ -97,14 +97,14 @@ if (!preg_match('~' . implode('', $match) . '~i', $contents))
 
 // Check the year is correct.
 $yearMatch = $match;
-$yearMatch[6] = '# {9}\* Copyright ' . $currentSoftwareYear . ' - SimpleDesk.net {19}#' . '[\r]?\n';
+$yearMatch[6] = '\* {9}\* Copyright ' . $currentSoftwareYear . ' - SimpleDesk.net {19}\*' . '[\r]?\n';
 if (!preg_match('~' . implode('', $yearMatch) . '~i', $contents))
 	die('Error: The software year is incorrect in ' . $currentFile . "\n");
 
 // Check the version is correct.
 $versionMatch = $match;
 $sd_version_whitespace = 40;
-$versionMatch[14] = '# SimpleDesk Version: ' . $currentVersion . ' {' . ($sd_version_whitespace - strlen($currentVersion)) . '}#' . '[\r]?\n';
+$versionMatch[14] = '\* SimpleDesk Version: ' . $currentVersion . ' {' . ($sd_version_whitespace - strlen($currentVersion)) . '}\*' . '[\r]?\n';
 if (!preg_match('~' . implode('', $versionMatch) . '~i', $contents))
 {
 	$badVersion = true;
