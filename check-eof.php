@@ -5,7 +5,7 @@
 *       An advanced help desk modification built on SMF       *
 ***************************************************************
 *                                                             *
-*         * Copyright 2019 - SimpleDesk.net                   *
+*         * Copyright 2020 - SimpleDesk.net                   *
 *                                                             *
 *   This file and its contents are subject to the license     *
 *   included with this distribution, license.txt, which       *
@@ -39,6 +39,10 @@ foreach ($ignoreFiles as $if)
 
 // Less efficent than opening a file with fopen, but we want to be sure to get the right end of the file. file_get_contents
 $file = fopen($currentFile, 'r');
+
+// Error?
+if ($file === false)
+	die('Error: Unable to open file ' . $currentFile . "\n");
 
 // Seek the end minus some bytes.
 fseek($file, -100, SEEK_END);

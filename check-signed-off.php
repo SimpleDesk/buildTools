@@ -5,7 +5,7 @@
 *       An advanced help desk modification built on SMF       *
 ***************************************************************
 *                                                             *
-*         * Copyright 2019 - SimpleDesk.net                   *
+*         * Copyright 2020 - SimpleDesk.net                   *
 *                                                             *
 *   This file and its contents are subject to the license     *
 *   included with this distribution, license.txt, which       *
@@ -19,7 +19,10 @@
 
 // Debug stuff.
 global $debugMsgs, $debugMode;
-$debugMode = true;
+
+// Debug?
+if (isset($_SERVER['argv'], $_SERVER['argv'][2]) && $_SERVER['argv'][2] == 'debug')
+	$debugMode = true;
 
 // First, lets do a basic test.  This is non GPG signed commits.
 $signedoff = find_signed_off();
@@ -78,7 +81,7 @@ function find_signed_off($commit = 'HEAD', $childs = array(), $level = 0)
 	debugPrint('Testing Line [' . $lastLine . ']');
 
 	// loop through each test and find one.
-	$result = false;
+	$testedString = $result = false;
 	foreach ($stringTests as $testedString)
 	{
 		debugPrint('Testing [' . $testedString . ']');
@@ -127,7 +130,7 @@ function find_signed_off($commit = 'HEAD', $childs = array(), $level = 0)
 }
 
 // Find a commit by GPG
-function find_gpg($commit = 'HEAD', $childs = array())
+function find_gpg($commit = 'HEAD')
 {
 	global $debugMsgs;
 

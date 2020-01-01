@@ -5,7 +5,7 @@
 *       An advanced help desk modification built on SMF       *
 ***************************************************************
 *                                                             *
-*         * Copyright 2019 - SimpleDesk.net                   *
+*         * Copyright 2020 - SimpleDesk.net                   *
 *                                                             *
 *   This file and its contents are subject to the license     *
 *   included with this distribution, license.txt, which       *
@@ -58,6 +58,10 @@ foreach ($ignoreFiles as $if)
 //define('SHD_VERSION', 'SimpleDesk 2.1 Beta 1');
 $indexFile = fopen('./sd_source/Subs-SimpleDesk.php', 'r');
 $indexContents = fread($indexFile, 3850);
+
+// Error?
+if ($file === false)
+	die('Error: Unable to open file sd_source/Subs-SimpleDesk.php' . "\n");
 
 if (!preg_match('~define\(\'SHD_VERSION\', \'SimpleDesk ([^\']+)\'\);~i', $indexContents, $versionResults))
 	die('Error: Could not locate SHD_VERSION' . "\n");
