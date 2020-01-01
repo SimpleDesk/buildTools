@@ -64,17 +64,17 @@ if ($indexFile === false)
 
 $indexContents = fread($indexFile, 3850);
 
-// Error?
-if ($file === false)
-	die('Error: Unable to open file sd_source/Subs-SimpleDesk.php' . "\n");
-
 if (!preg_match('~define\(\'SHD_VERSION\', \'SimpleDesk ([^\']+)\'\);~i', $indexContents, $versionResults))
 	die('Error: Could not locate SHD_VERSION' . "\n");
 $currentVersion = $versionResults[1];
 
 $currentSoftwareYear = (int) date('Y', time());
-
 $file = fopen($currentFile, 'r');
+
+// Error?
+if ($file === false)
+	die('Error: Unable to open file ' . $currentFile . "\n");
+
 $contents = fread($file, 1300);
 
 // How the license file should look, in a regex type format.
