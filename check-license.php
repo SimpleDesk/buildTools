@@ -57,6 +57,11 @@ foreach ($ignoreFiles as $if)
 // Lets get the Subs-SimpleDesk.php for SHD_VERSION.
 //define('SHD_VERSION', 'SimpleDesk 2.1 Beta 1');
 $indexFile = fopen('./sd_source/Subs-SimpleDesk.php', 'r');
+
+// Error?
+if ($indexFile === false)
+	die("Error: Unable to open file ./sd_source/Subs-SimpleDesk.php\n");
+
 $indexContents = fread($indexFile, 3850);
 
 // Error?
