@@ -13,7 +13,7 @@
 *   Any questions, please contact SimpleDesk.net              *
 *                                                             *
 ***************************************************************
-* SimpleDesk Version: 2.1 RC1                                 *
+* SimpleDesk Version: 2.1 Beta 1                              *
 * File Info: check-signed-off.php                             *
 **************************************************************/
 
@@ -46,7 +46,7 @@ if (empty($signedoff))
 		echo "\n---DEBUG MSGS END ---\n";
 	}
 
-	die('Error: Signed-off-by not found in commit message' . "\n");
+	fatalError('Error: Signed-off-by not found in commit message' . "\n");
 }
 elseif ($debugMode)
 	debugPrint('Valid signed off found' . "\n");
@@ -195,4 +195,10 @@ function debugPrint($msg)
 
 	if ($debugMode)
 		echo "\nDEBUG: ", $msg;
+}
+
+function fatalError($msg)
+{
+	fwrite(STDERR, $msg);
+	die;
 }

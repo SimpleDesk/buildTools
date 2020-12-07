@@ -13,7 +13,7 @@
 *   Any questions, please contact SimpleDesk.net              *
 *                                                             *
 ***************************************************************
-* SimpleDesk Version: 2.1 RC1                                 *
+* SimpleDesk Version: 2.1 Beta 1                              *
 * File Info: check-license.php                                *
 **************************************************************/
 
@@ -42,12 +42,12 @@ $ignoreFilesVersion = array(
 
 // No file? Thats bad.
 if (!isset($_SERVER['argv'], $_SERVER['argv'][1]))
-	die('Error: No File specified' . "\n");
+	fatalError('Error: No File specified' . "\n");
 
 // The file has to exist.
 $currentFile = $_SERVER['argv'][1];
 if (!file_exists($currentFile))
-	die('Error: File does not exist' . "\n");
+	fatalError('Error: File does not exist' . "\n");
 
 // Is this ignored?
 foreach ($ignoreFiles as $if)
@@ -60,12 +60,12 @@ $indexFile = fopen('./sd_source/Subs-SimpleDesk.php', 'r');
 
 // Error?
 if ($indexFile === false)
-	die("Error: Unable to open file ./sd_source/Subs-SimpleDesk.php\n");
+	fatalError("Error: Unable to open file ./sd_source/Subs-SimpleDesk.php\n");
 
 $indexContents = fread($indexFile, 3850);
 
 if (!preg_match('~define\(\'SHD_VERSION\', \'SimpleDesk ([^\']+)\'\);~i', $indexContents, $versionResults))
-	die('Error: Could not locate SHD_VERSION' . "\n");
+	fatalError('Error: Could not locate SHD_VERSION' . "\n");
 $currentVersion = $versionResults[1];
 
 $currentSoftwareYear = (int) date('Y', time());
@@ -73,7 +73,7 @@ $file = fopen($currentFile, 'r');
 
 // Error?
 if ($file === false)
-	die('Error: Unable to open file ' . $currentFile . "\n");
+	fatalError('Error: Unable to open file ' . $currentFile . "\n");
 
 $contents = fread($file, 1300);
 
@@ -102,13 +102,13 @@ $match = array(
 
 // Just see if the license is there.
 if (!preg_match('~' . implode('', $match) . '~i', $contents))
-	die('Error: License File is invalid or not found in ' . $currentFile . "\n");
+	fatalError('Error: License File is invalid or not found in ' . $currentFile . "\n");
 
 // Check the year is correct.
 $yearMatch = $match;
 $yearMatch[6] = '\* {9}\* Copyright ' . $currentSoftwareYear . ' - SimpleDesk.net {19}\*' . '[\r]?\n';
 if (!preg_match('~' . implode('', $yearMatch) . '~i', $contents))
-	die('Error: The software year is incorrect in ' . $currentFile . "\n");
+	fatalError('Error: The software year is incorrect in ' . $currentFile . "\n");
 
 // Check the version is correct.
 $versionMatch = $match;
@@ -122,15 +122,20 @@ if (!preg_match('~' . implode('', $versionMatch) . '~i', $contents))
 			$badVersion = false;
 
 	if ($badVersion)
-		die('Error: The version is incorrect in ' . $currentFile . "\n");
+		fatalError('Error: The version is incorrect in ' . $currentFile . "\n");
 }
 
 die('Stop here' . "\n");
-
 
 $fileinfoMatch = $match;
 $shortCurrentFile = basename($currentFile);
 $sd_file_whitespace = 49;
 $fileinfoMatch[15] = '# File Info: ' . $shortCurrentFile . ' {' . ($sd_file_whitespace - strlen($shortCurrentFile)) . '}#' . '[\r]?\n';
 if (!preg_match('~' . implode('', $fileinfoMatch) . '~i', $contents))
-	die('Error: The file info is incorrect in ' . $currentFile . "\n");
+	fatalError('Error: The file info is incorrect in ' . $currentFile . "\n");
+	
+function fatalError($msg)
+{
+	fwrite(STDERR, $msg);
+	die;
+}
