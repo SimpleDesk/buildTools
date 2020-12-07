@@ -2,7 +2,7 @@
 // Stuff we will ignore.
 $ignoreFiles = array(
 	'\.github/',
-	'\.buildTools/',
+	'/buildTools/',
 );
 
 $curDir = '.';
