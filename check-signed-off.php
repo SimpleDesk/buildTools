@@ -32,7 +32,7 @@ if (empty($signedoff))
 	$signedoff = find_gpg();
 
 // Nothing yet?  Lets ask your parents.
-if (empty($signedoff) && isset($_SERVER['argv'], $_SERVER['argv'][1]) && $_SERVER['argv'][1] == 'travis')
+if (empty($signedoff) && isset($_SERVER['argv'], $_SERVER['argv'][1]) && ($_SERVER['argv'][1] == 'travis' || $_SERVER['argv'][1] == 'github'))
 	$signedoff = find_signed_off_parents();
 
 // Nothing?  Well darn.
