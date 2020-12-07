@@ -26,7 +26,7 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 		continue;
 
 	$foundBad = true;
-	fwrite(STDERR, $result);
+	fwrite(STDERR, $result . "\n");
 }
 
 if (!empty($foundBad))

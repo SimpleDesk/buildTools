@@ -199,6 +199,6 @@ function debugPrint($msg)
 
 function fatalError($msg)
 {
-	fwrite(STDERR, $msg);
+	fwrite(STDERR, $msg . "\n");
 	die;
 }
