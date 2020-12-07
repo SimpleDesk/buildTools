@@ -20,7 +20,7 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 		if (preg_match('~' . $if . '~i', $currentFile))
 			continue 2;
 
-	$result = trim(shell_exec('php buildTools/check-license.php ' . $currentFile));
+	$result = trim(shell_exec('php buildTools/check-license.php ' . $currentFile . ' 2>&1'));
 
 	if (!preg_match('~Error:([^$]+)~', $result))
 		continue;
@@ -29,4 +29,5 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 	fwrite(STDERR, $result);
 }
 
-exit($foundBad ? 1 : 0);
+if (!empty($foundBad))
+	exit(1);

@@ -8,7 +8,7 @@ $ignoreFiles = array(
    Add in this in each line the binary file, i.e: /usr/bin/php
 */
 $addditionalPHPBinaries = array();
-if (!empty(dirname(__FILE__) . '/check-php-syntax-binaries.txt'))
+if (file_exists(dirname(__FILE__) . '/check-php-syntax-binaries.txt'))
 	$addditionalPHPBinaries = file(dirname(__FILE__) . '/check-php-syntax-binaries.txt');
 
 $curDir = '.';
@@ -32,7 +32,7 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 	if (!preg_match('~No syntax errors detected in ' . $currentFile . '~', $result))
 	{
 		$foundBad = true;
-		fwrite(STDERR, 'PHP via $PATH:' . $result . "\n");
+		fwrite(STDERR, 'PHP via $PATH: ' . $result . "\n");
 		continue;
 	}
 
@@ -45,10 +45,11 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($curDir, F
 		if (!preg_match('~No syntax errors detected in ' . $currentFile . '~', $result))
 		{
 			$foundBad = true;
-			fwrite(STDERR, 'PHP via ' . $binary . ':' . $result . "\n");
+			fwrite(STDERR, 'PHP via ' . $binary . ': ' . $result . "\n");
 			continue 2;
 		}
 	}
 }
 
-exit($foundBad ? 1 : 0);
+if (!empty($foundBad))
+	exit(1);

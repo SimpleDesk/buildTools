@@ -42,12 +42,12 @@ $ignoreFilesVersion = array(
 
 // No file? Thats bad.
 if (!isset($_SERVER['argv'], $_SERVER['argv'][1]))
-	fatalError('Error: No File specified' . "\n");
+	die('Error: No File specified' . "\n");
 
 // The file has to exist.
 $currentFile = $_SERVER['argv'][1];
 if (!file_exists($currentFile))
-	fatalError('Error: File does not exist' . "\n");
+	die('Error: File does not exist' . "\n");
 
 // Is this ignored?
 foreach ($ignoreFiles as $if)
@@ -60,12 +60,12 @@ $indexFile = fopen('./sd_source/Subs-SimpleDesk.php', 'r');
 
 // Error?
 if ($indexFile === false)
-	fatalError("Error: Unable to open file ./sd_source/Subs-SimpleDesk.php\n");
+	die("Error: Unable to open file ./sd_source/Subs-SimpleDesk.php\n");
 
 $indexContents = fread($indexFile, 3850);
 
 if (!preg_match('~define\(\'SHD_VERSION\', \'SimpleDesk ([^\']+)\'\);~i', $indexContents, $versionResults))
-	fatalError('Error: Could not locate SHD_VERSION' . "\n");
+	die('Error: Could not locate SHD_VERSION' . "\n");
 $currentVersion = $versionResults[1];
 
 $currentSoftwareYear = (int) date('Y', time());
@@ -73,7 +73,7 @@ $file = fopen($currentFile, 'r');
 
 // Error?
 if ($file === false)
-	fatalError('Error: Unable to open file ' . $currentFile . "\n");
+	die('Error: Unable to open file ' . $currentFile . "\n");
 
 $contents = fread($file, 1300);
 
@@ -102,13 +102,13 @@ $match = array(
 
 // Just see if the license is there.
 if (!preg_match('~' . implode('', $match) . '~i', $contents))
-	fatalError('Error: License File is invalid or not found in ' . $currentFile . "\n");
+	die('Error: License File is invalid or not found in ' . $currentFile . "\n");
 
 // Check the year is correct.
 $yearMatch = $match;
 $yearMatch[6] = '\* {9}\* Copyright ' . $currentSoftwareYear . ' - SimpleDesk.net {19}\*' . '[\r]?\n';
 if (!preg_match('~' . implode('', $yearMatch) . '~i', $contents))
-	fatalError('Error: The software year is incorrect in ' . $currentFile . "\n");
+	die('Error: The software year is incorrect in ' . $currentFile . "\n");
 
 // Check the version is correct.
 $versionMatch = $match;
@@ -122,7 +122,7 @@ if (!preg_match('~' . implode('', $versionMatch) . '~i', $contents))
 			$badVersion = false;
 
 	if ($badVersion)
-		fatalError('Error: The version is incorrect in ' . $currentFile . "\n");
+		die('Error: The version is incorrect in ' . $currentFile . "\n");
 }
 
 die('Stop here' . "\n");
@@ -132,10 +132,4 @@ $shortCurrentFile = basename($currentFile);
 $sd_file_whitespace = 49;
 $fileinfoMatch[15] = '# File Info: ' . $shortCurrentFile . ' {' . ($sd_file_whitespace - strlen($shortCurrentFile)) . '}#' . '[\r]?\n';
 if (!preg_match('~' . implode('', $fileinfoMatch) . '~i', $contents))
-	fatalError('Error: The file info is incorrect in ' . $currentFile . "\n");
-	
-function fatalError($msg)
-{
-	fwrite(STDERR, $msg);
-	die;
-}
+	die('Error: The file info is incorrect in ' . $currentFile . "\n");
