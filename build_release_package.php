@@ -64,14 +64,15 @@ else
 	$version = 'NA';
 
 // Build baby, build!
+
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.tgz'))
 	unlink($args['dst'] . '/SimpleDesk_' . $version . '.tgz');
-shell_exec($tar_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' -czf ' . $args['dst'] . '/SimpleDesk_' . $version . '.tgz *');
+echo($tar_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' --exclude=\'node_modules\' --exclude=\'.DS_Store\' -czf ' . $args['dst'] . '/SimpleDesk_' . $version . '.tgz *');
 
 // Zip it, zip it good.
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.zip'))
 	unlink($args['dst'] . '/SimpleDesk_' . $version . '.zip');
-shell_exec($zip_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' -1 ' . $args['dst'] . '/SimpleDesk_' . $version . '.zip *');
+echo($zip_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools/*\' --exclude=\'node_modules/*\' --exclude=\'*' . '/.DS_Store\' -1 ' . $args['dst'] . '/SimpleDesk_' . $version . '.zip -r *');
 
 // Undo the damage we did to the package file
 shell_exec($git_path . ' checkout -- package-info.xml');
