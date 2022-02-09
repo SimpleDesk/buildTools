@@ -52,27 +52,29 @@ if (!empty($args['skip-pull']))
 $pkg_file = file_get_contents('package-info.xml');
 $pkg_file = preg_match('~<version>([^<]+)</version>~i', $pkg_file, $m);
 
-if (!empty($m))
-	$version = strtr(
-		ucFirst(trim($m[1])),
-		array(
-			' ' => '-',
-			'Rc' => 'RC',
-		)
-	);
-else
-	$version = 'NA';
+if (empty($v))
+	die('Unknown Version');
+
+$version = strtr(
+	ucFirst(trim($v[1])),
+	array(
+		' ' => '-',
+		'Rc' => 'RC',
+	)
+);
+
+$package_file_base = 'SimpleDesk_' . $version;
 
 // Build baby, build!
 
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.tgz'))
 	unlink($args['dst'] . '/SimpleDesk_' . $version . '.tgz');
-shell_exec($tar_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' --exclude=\'node_modules\' --exclude=\'.DS_Store\' -czf ' . $args['dst'] . '/SimpleDesk_' . $version . '.tgz *');
+shell_exec($tar_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' --exclude=\'node_modules\' --exclude=\'.DS_Store\' -czf ' . $args['dst'] . '/' . $package_file_base . '.tgz *');
 
 // Zip it, zip it good.
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.zip'))
 	unlink($args['dst'] . '/SimpleDesk_' . $version . '.zip');
-shell_exec($zip_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools/*\' --exclude=\'node_modules/*\' --exclude=\'*' . '/.DS_Store\' -1 ' . $args['dst'] . '/SimpleDesk_' . $version . '.zip -r *');
+shell_exec($zip_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools/*\' --exclude=\'node_modules/*\' --exclude=\'*' . '/.DS_Store\' -1 ' . $args['dst'] . '/' . $package_file_base . '.zip -r *');
 
 // Undo the damage we did to the package file
 shell_exec($git_path . ' checkout -- package-info.xml');
