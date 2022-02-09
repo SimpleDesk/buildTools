@@ -69,7 +69,7 @@ $package_file_base = 'SimpleDesk_' . $version;
 
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.tgz'))
 	unlink($args['dst'] . '/SimpleDesk_' . $version . '.tgz');
-shell_exec($tar_path . ' --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' --exclude=\'node_modules\' --exclude=\'.DS_Store\' -czf ' . $args['dst'] . '/' . $package_file_base . '.tgz *');
+shell_exec($tar_path . ' --no-xattrs --no-acls --no-mac-metadata --no-fflags --exclude=\'.git\' --exclude=\'install-testdata.php\' --exclude=\'error_log\' --exclude=\'.gitignore\' --exclude=\'.gitattributes\' --exclude=\'.travis.yml\' --exclude=\'buildTools\' --exclude=\'node_modules\' --exclude=\'.DS_Store\' -czf ' . $args['dst'] . '/' . $package_file_base . '.tgz *');
 
 // Zip it, zip it good.
 if (file_exists($args['dst'] . '/SimpleDesk_' . $version . '.zip'))
