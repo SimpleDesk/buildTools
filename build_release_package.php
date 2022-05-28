@@ -50,7 +50,7 @@ if (!empty($args['skip-pull']))
 
 // Try to find our version.
 $pkg_file = file_get_contents('package-info.xml');
-$pkg_file = preg_match('~<version>([^<]+)</version>~i', $pkg_file, $m);
+preg_match('~<version>([^<]+)</version>~i', $pkg_file, $v);
 
 if (empty($v))
 	die('Unknown Version');
@@ -63,7 +63,7 @@ $version = strtr(
 	)
 );
 
-$package_file_base = 'SimpleDesk_' . $version;
+$package_file_base = 'SimpleDesk-' . $version;
 
 // Build baby, build!
 
